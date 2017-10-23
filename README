@@ -1,0 +1,32 @@
+
+23 Oct 2017
+-----------
+go to http://skyserver.sdss.org/dr12/en/tools/search/sql.aspx
+
+SELECT rerun, run
+FROM Run
+WHERE stripe = 82
+--> CSV
+--> Submit
+
+--> downloaded Skyserver_DR12_SQL_2017.csv
+
+
+Next, convert that file into commands to download the data.
+The files could be directly downloaded via wget but it will be more efficient to get them via rsync instead, we will use a python script to convert all the frames in the CSV file into the appropriate rsync commands.
+
+- python fetchs82.py
+
+see ref: http://www.sdss.org/dr12/tutorials/get_stripe82_images/
+
+-  These images are calibrated in nanomaggies per pixel, and have had a sky-subtraction applied.
+- The image headers have WCS headers that have been corrected to align correctly with the final astrometric solution, but without the polynomial distortion terms. In case the full astrometric solution is desired, it is included as an HDU in the file. The astrometry algorithms page describes how to use the astrometric calibration information.
+- https://data.sdss.org/datamodel/files/BOSS_PHOTOOBJ/frames/RERUN/RUN/CAMCOL/frame.html
+
+
+alternatively, fully processed images (aka fpC) images for the Stripe 82 from DR7 can be downloaded from the DAS website.
+   - fpC = image itself, bias subtracted, flat fielded, and with bad pixels replaced by interpolated values (the "corrected frame")
+
+Frames Pipeline (frames) [2002AJ....123..485S, section 4.4]
+The frames pipeline applies flat field and bias corrections to each frame, and interpolates values for pixels in bad columns and bleed trails and those corrupted by cosmic rays to produce a "corrected frame" (fpC file).
+- http://classic.sdss.org/dr7/dm/flatFiles/fpC.html
